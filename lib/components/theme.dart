@@ -18,6 +18,8 @@ ThemeData darkMode = ThemeData(
     onSecondaryContainer: Color(0xff888888),
     //Simple Green
     tertiary: Color(0xff75F94C),
+    //transparent
+    onTertiary: Colors.transparent,
   ),
 );
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gymbuddy/components/theme.dart';
 import 'package:gymbuddy/pages/homePage.dart';
 import 'package:gymbuddy/pages/signupPages/startPage.dart';
+import 'package:gymbuddy/pages/signupPages/trainerSignOptions.dart';
 import 'package:gymbuddy/pages/signupPages/userSignOptions.dart';
 
 void main() {
@@ -19,7 +20,8 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: darkMode,
       // home: const StartPage(),
-      home: const UserSignOptions(),
+      // home: const UserSignOptions(),
+      home: const TrainerSignOptions(),
     );
   }
 }

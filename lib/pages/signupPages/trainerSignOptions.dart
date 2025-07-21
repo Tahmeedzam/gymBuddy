@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:gymbuddy/components/signInButtons.dart';
 
-class UserSignOptions extends StatefulWidget {
-  const UserSignOptions({super.key});
+class TrainerSignOptions extends StatefulWidget {
+  const TrainerSignOptions({super.key});
 
   @override
-  State<UserSignOptions> createState() => _UserSignOptionsState();
+  State<TrainerSignOptions> createState() => _TrainerSignOptionsState();
 }
 
-class _UserSignOptionsState extends State<UserSignOptions> {
+class _TrainerSignOptionsState extends State<TrainerSignOptions> {
   onGoogleTap() {
     print("Google Clicked");
   }
@@ -40,7 +40,7 @@ class _UserSignOptionsState extends State<UserSignOptions> {
                   style: TextStyle(fontSize: 24),
                   textAlign: TextAlign.center,
                   TextSpan(
-                    text: 'Grind ', // Default text
+                    text: 'Guide ', // Default text
                     style: TextStyle(
                       fontFamily: 'Inter',
                       color: Theme.of(context).colorScheme.onSecondary,
@@ -48,15 +48,7 @@ class _UserSignOptionsState extends State<UserSignOptions> {
                     ),
                     children: [
                       TextSpan(
-                        text: 'with your ',
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          color: Theme.of(context).colorScheme.onSecondary,
-                          fontSize: 24,
-                        ),
-                      ),
-                      TextSpan(
-                        text: 'Buddies ',
+                        text: 'your Clients ',
                         style: TextStyle(
                           fontFamily: 'InterBold',
                           color: Theme.of(context).colorScheme.onSecondary,
