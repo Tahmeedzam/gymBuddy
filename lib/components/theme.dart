@@ -9,9 +9,9 @@ ThemeData darkMode = ThemeData(
   brightness: Brightness.dark,
   colorScheme: ColorScheme.dark(
     //Background
-    primary: Color(0xff0d0d0d),
+    primary: Color(0xff0D0D0D),
     //Gry cards
-    secondary: Color(0xff191919),
+    secondary: Color(0xff181818),
     //Text
     onSecondary: Color(0xffffffff),
     //Grey text

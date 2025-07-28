@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:gymbuddy/components/theme.dart';
+import 'package:gymbuddy/pages/formPages/userSignUpForm3.dart';
+import 'package:gymbuddy/pages/formPages/userSignUpForm1.dart';
+import 'package:gymbuddy/pages/formPages/userSignUpForm2.dart';
+import 'package:gymbuddy/pages/formPages/userSignUpForm4.dart';
 import 'package:gymbuddy/pages/homePage.dart';
 import 'package:gymbuddy/pages/signupPages/startPage.dart';
 import 'package:gymbuddy/pages/signupPages/trainerSignOptions.dart';
 import 'package:gymbuddy/pages/signupPages/userSignOptions.dart';
+import 'package:gymbuddy/providers/userDataProvider.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => FormDataProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -21,7 +32,19 @@ class MyApp extends StatelessWidget {
       theme: darkMode,
       // home: const StartPage(),
       // home: const UserSignOptions(),
-      home: const TrainerSignOptions(),
+      // home: const TrainerSignOptions(),
+      home: const UserSignUpForm1(),
+      // home: const userSignUpForm2(),
+      // home: const userSignUpForm3(),
+      // home: const userSignUpForm4(),
+      routes: {
+        '/userSignOptions': (context) => const UserSignOptions(),
+        '/trainerSignOptions': (context) => const TrainerSignOptions(),
+        '/signupForm1': (context) => const UserSignUpForm1(),
+        '/signupForm2': (context) => const userSignUpForm2(),
+        '/signupForm3': (context) => const userSignUpForm3(),
+        '/signupForm4': (context) => const userSignUpForm4(),
+      },
     );
   }
 }
