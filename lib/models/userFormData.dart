@@ -18,7 +18,8 @@ class UserModel {
   double? height;
   double? weight;
   double? bmi;
-  int? fitnessLevel;
+  String? bmiStringResult;
+  String? fitnessLevelName;
 
   String? bio;
   DateTime? joiningDate;
@@ -40,7 +41,8 @@ class UserModel {
     this.height,
     this.weight,
     this.bmi,
-    this.fitnessLevel,
+    this.bmiStringResult,
+    this.fitnessLevelName,
 
     this.bio,
     this.joiningDate,
@@ -49,22 +51,26 @@ class UserModel {
   // Convert to Firestore-friendly Map
   Map<String, dynamic> toMap() {
     return {
-      'profileImageUrl': profileImageUrl,
+      //form1
+      'userProfileImageUrl': profileImageUrl,
       'uid': uid,
-      'fullName': name,
+      'userFullName': name,
       'userName': username,
-      'gender': gender,
-      'dob': dob,
-      'email': email,
-      'location': location,
-      'isVerified': verified,
-      'isReferred': referralUsed,
-      'height': height,
-      'weight': weight,
-      'bmi': bmi,
-      'fitnessLevel': fitnessLevel,
-      'bio': bio,
-      'joiningDate': joiningDate,
+      'userGender': gender,
+      'userDOB': dob,
+      'userEmail': email,
+      'userLocation': location,
+      'isUserVerified': verified,
+      'isUserReferred': referralUsed,
+      //form2
+      'userHeight': height,
+      'userWeight': weight,
+      'userBMIScore': bmi,
+      'userBMIStringResult': bmiStringResult,
+      'userFitnessLevel': fitnessLevelName,
+
+      'userBio': bio,
+      'userJoiningDate': joiningDate,
     };
   }
 
@@ -83,7 +89,6 @@ class UserModel {
       height: map['height']?.toDouble(),
       weight: map['weight']?.toDouble(),
       bmi: map['bmi']?.toDouble(),
-      fitnessLevel: map['fitnessLevel'],
       bio: map['bio'],
       joiningDate: map['joiningDate'] != null
           ? (map['joiningDate'] as Timestamp).toDate()

@@ -16,6 +16,7 @@ class _userSignUpForm4State extends State<userSignUpForm4> {
 
   String? bmiHeader;
   String? bmiMessage;
+  String? bmiStringResult;
   double? bmi;
 
   int selectedLevel = 1;
@@ -54,17 +55,37 @@ class _userSignUpForm4State extends State<userSignUpForm4> {
       provider.updateBMI(bmiValue);
 
       if (bmiValue < 18.5) {
-        bmiHeader = "You're Underweight";
-        bmiMessage = "...";
+        setState(() {
+          bmiHeader = "You're Underweight";
+          bmiStringResult = "Underweight";
+          bmiMessage =
+              "You're doing great! It might help to fuel your body with a bit more nutrition. Small steps and a balanced plan can make a big difference. Keep going!";
+          provider.updateBMIString(bmiStringResult);
+        });
       } else if (bmiValue < 24.5) {
-        bmiHeader = "Healthy Weight";
-        bmiMessage = "...";
+        setState(() {
+          bmiHeader = "Healthy Weight";
+          bmiStringResult = "Healthy";
+          bmiMessage =
+              "Awesome! You're in a healthy range — keep maintaining your lifestyle and staying consistent. Your body will thank you!";
+          provider.updateBMIString(bmiStringResult);
+        });
       } else if (bmiValue < 29.9) {
-        bmiHeader = "You're Overweight";
-        bmiMessage = "...";
+        setState(() {
+          bmiHeader = "You're Overweight";
+          bmiStringResult = "Overweight";
+          bmiMessage =
+              "You're on the journey — and that's what matters. A few mindful adjustments and regular activity can work wonders. You’ve got this!";
+          provider.updateBMIString(bmiStringResult);
+        });
       } else {
-        bmiHeader = "You're Obese";
-        bmiMessage = "...";
+        setState(() {
+          bmiHeader = "You're Obese";
+          bmiStringResult = "Obese";
+          bmiMessage =
+              "Progress starts with awareness. You’re taking the first step by tracking — and that’s huge! Keep moving forward, one day at a time. You’re not alone in this!";
+          provider.updateBMIString(bmiStringResult);
+        });
       }
     } else {
       setState(() {
@@ -207,18 +228,31 @@ class _userSignUpForm4State extends State<userSignUpForm4> {
               const SizedBox(height: 24),
 
               // Level selector
+              Padding(
+                padding: const EdgeInsets.only(left: 0),
+                child: Text(
+                  'Select your level:',
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    color: Theme.of(context).colorScheme.onSecondaryContainer,
+                  ),
+                ),
+              ),
+              SizedBox(height: 15),
               Row(
                 children: List.generate(3, (index) {
                   final labels = ['Beginner', 'Moderate', 'Advanced'];
                   final isSelected = index == selectedLevel;
+                  String? selectedLevelName;
 
                   return Expanded(
                     child: GestureDetector(
                       onTap: () {
                         setState(() {
                           selectedLevel = index;
+                          selectedLevelName = labels[index];
                         });
-                        provider.updateFitnessLevel(index);
+                        provider.updateFitnessLevelString(selectedLevelName);
                       },
                       child: Container(
                         margin: EdgeInsets.symmetric(horizontal: 4),
@@ -229,7 +263,7 @@ class _userSignUpForm4State extends State<userSignUpForm4> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
                           color: isSelected
-                              ? colorScheme.secondary
+                              ? Color(0xff009C47)
                               : Colors.transparent,
                           border: Border.all(
                             color: colorScheme.onSecondary,
@@ -284,7 +318,8 @@ class _userSignUpForm4State extends State<userSignUpForm4> {
                       print('Height: ${user.height}');
                       print('Weight: ${user.weight}');
                       print('BMI: ${user.bmi}');
-                      print('Level: ${user.fitnessLevel}');
+                      print('BMI: ${user.bmiStringResult}');
+                      print('Level: ${user.fitnessLevelName}');
                       print('Location: ${user.location}');
                       print('Bio: ${user.bio}');
                       print('Profile URL: ${user.profileImageUrl}');
@@ -302,34 +337,12 @@ class _userSignUpForm4State extends State<userSignUpForm4> {
                         ),
                       ),
                       child: Center(
-                        child: GestureDetector(
-                          onTap: () {
-                            final provider = Provider.of<FormDataProvider>(
-                              context,
-                              listen: false,
-                            );
-                            final user = provider.formData;
-
-                            print('--- User Form Data ---');
-                            print('Name: ${user.name}');
-                            print('Email: ${user.email}');
-                            print('Gender: ${user.gender}');
-                            print('DOB: ${user.dob}');
-                            print('Height: ${user.height}');
-                            print('Weight: ${user.weight}');
-                            print('BMI: ${user.bmi}');
-                            print('Level: ${user.fitnessLevel}');
-                            print('Location: ${user.location}');
-                            print('Bio: ${user.bio}');
-                            print('Profile URL: ${user.profileImageUrl}');
-                          },
-                          child: Text(
-                            "Next",
-                            style: TextStyle(
-                              fontFamily: "InterBold",
-                              fontSize: 14,
-                              color: Theme.of(context).colorScheme.onSecondary,
-                            ),
+                        child: Text(
+                          "Next",
+                          style: TextStyle(
+                            fontFamily: "InterBold",
+                            fontSize: 14,
+                            color: Theme.of(context).colorScheme.onSecondary,
                           ),
                         ),
                       ),

@@ -38,8 +38,21 @@ class _UserSignUpForm1State extends State<UserSignUpForm1> {
     super.initState();
   }
 
-  void handleSubmit() {
+  bool handleSubmit() {
     if (_formKey.currentState!.validate()) {
+      if (selectedGender == null) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Select your gender")));
+        return false;
+      }
+      if (selectedDob == null) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Select your DOB")));
+        return false;
+      }
+
       final provider = Provider.of<FormDataProvider>(context, listen: false);
       provider.updateName(nameController.text.trim());
       provider.updateUsername(usernameController.text.trim());
@@ -47,24 +60,19 @@ class _UserSignUpForm1State extends State<UserSignUpForm1> {
       provider.updateGender(selectedGender!);
       provider.updateDob(selectedDob!);
 
-      // Optionally show success toast/snack
+      // Debug print
+      // print('Name: ${provider.formData.name}');
+      // print('Username: ${provider.formData.username}');
+      // print('Email: ${provider.formData.email}');
+      // print('Gender: ${provider.formData.gender}');
+      // print('DOB: ${provider.formData.dob}');
+
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text("Step 1 saved ✅")));
-
-      if (selectedGender == null) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text("select your gender")));
-        return;
-      }
-      if (selectedDob == null) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('select your DOB')));
-        return;
-      }
+      return true;
     }
+    return false;
   }
 
   @override
@@ -408,9 +416,11 @@ class _UserSignUpForm1State extends State<UserSignUpForm1> {
                         child: Center(
                           child: GestureDetector(
                             onTap: () {
-                              handleSubmit;
-                              Navigator.pushNamed(context, '/signupForm2');
+                              if (handleSubmit()) {
+                                Navigator.pushNamed(context, '/signupForm2');
+                              }
                             },
+
                             child: Text(
                               "Verify",
                               style: TextStyle(

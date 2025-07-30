@@ -60,8 +60,13 @@ class FormDataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateFitnessLevel(int level) {
-    _formData.fitnessLevel = level;
+  void updateBMIString(String? value) {
+    _formData.bmiStringResult = value;
+    notifyListeners();
+  }
+
+  void updateFitnessLevelString(String? level) {
+    _formData.fitnessLevelName = level;
     notifyListeners();
   }
 
