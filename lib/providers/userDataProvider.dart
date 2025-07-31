@@ -7,6 +7,16 @@ class FormDataProvider extends ChangeNotifier {
   UserModel get data => _formData;
   UserModel get formData => _formData;
   String? get location => _formData.location;
+  Map<String, List<String>> _weeklyGoal = {
+    'Monday': [],
+    'Tuesday': [],
+    'Wednesday': [],
+    'Thursday': [],
+    'Friday': [],
+    'Saturday': [],
+    'Sunday': [],
+  };
+  Map<String, List<String>> get weeklyGoal => _weeklyGoal;
 
   //FormPage1
   void updateProfileImageUrl(String value) {
@@ -67,6 +77,29 @@ class FormDataProvider extends ChangeNotifier {
 
   void updateFitnessLevelString(String? level) {
     _formData.fitnessLevelName = level;
+    notifyListeners();
+  }
+
+  //Form3
+  // In FormDataProvider.dart
+  void updateDailyExerciseMinutes(int minutes) {
+    _formData.dailyExerciseMinutes = minutes;
+    notifyListeners();
+  }
+
+  void updateDailyKcalBurn(int kcal) {
+    _formData.dailyKcalBurn = kcal;
+    notifyListeners();
+  }
+
+  //Form4
+  void updateDayGoal(String day, List<String> selected) {
+    _weeklyGoal[day] = selected;
+    notifyListeners();
+  }
+
+  void updateWeeklyGoal(Map<String, List<String>> goal) {
+    _weeklyGoal = goal;
     notifyListeners();
   }
 

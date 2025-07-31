@@ -323,6 +323,8 @@ class _userSignUpForm4State extends State<userSignUpForm4> {
                       print('Location: ${user.location}');
                       print('Bio: ${user.bio}');
                       print('Profile URL: ${user.profileImageUrl}');
+
+                      Navigator.pushNamed(context, '/signupForm5');
                     },
                     child: Container(
                       height: 42,

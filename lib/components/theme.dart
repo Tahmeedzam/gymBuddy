@@ -16,6 +16,10 @@ ThemeData darkMode = ThemeData(
     onSecondary: Color(0xffffffff),
     //Grey text
     onSecondaryContainer: Color(0xff888888),
+
+    //Line color
+    onPrimary: Color(0xff333333),
+
     //Simple Green
     tertiary: Color(0xff75F94C),
     //transparent

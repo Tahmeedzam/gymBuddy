@@ -21,6 +21,13 @@ class UserModel {
   String? bmiStringResult;
   String? fitnessLevelName;
 
+  //form3
+  int? dailyExerciseMinutes;
+  int? dailyKcalBurn;
+
+  //Form4
+  Map<String, List<String>>? weeklyWorkoutPlan;
+
   String? bio;
   DateTime? joiningDate;
 
@@ -43,6 +50,13 @@ class UserModel {
     this.bmi,
     this.bmiStringResult,
     this.fitnessLevelName,
+
+    //Form3
+    this.dailyExerciseMinutes,
+    this.dailyKcalBurn,
+
+    //Form4
+    this.weeklyWorkoutPlan,
 
     this.bio,
     this.joiningDate,
@@ -69,6 +83,13 @@ class UserModel {
       'userBMIStringResult': bmiStringResult,
       'userFitnessLevel': fitnessLevelName,
 
+      //form3
+      'userDailyTimeGoal': dailyExerciseMinutes,
+      'userDailyKcalGoal': dailyKcalBurn,
+
+      //form4
+      'weeklyWorkoutPlan': weeklyWorkoutPlan,
+
       'userBio': bio,
       'userJoiningDate': joiningDate,
     };
@@ -89,6 +110,8 @@ class UserModel {
       height: map['height']?.toDouble(),
       weight: map['weight']?.toDouble(),
       bmi: map['bmi']?.toDouble(),
+      weeklyWorkoutPlan: (map['weeklyWorkoutPlan'] as Map<String, dynamic>?)
+          ?.map((key, value) => MapEntry(key, List<String>.from(value))),
       bio: map['bio'],
       joiningDate: map['joiningDate'] != null
           ? (map['joiningDate'] as Timestamp).toDate()
