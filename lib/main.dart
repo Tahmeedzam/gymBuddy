@@ -40,11 +40,12 @@ class MyApp extends StatelessWidget {
       // home: const StartPage(),
       // home: const UserSignOptions(),
       // home: const TrainerSignOptions(),
+      home: const HomePage(),
       // home: const UserSignUpForm1(),
       // home: const userSignUpForm2(),
       // home: const userSignUpForm3(),
       // home: const userSignUpForm4(),
-      home: const userSignUpForm5(),
+      // home: const userSignUpForm5(),
       // home: const UserSignUpForm6(),
       routes: {
         '/userSignOptions': (context) => const UserSignOptions(),

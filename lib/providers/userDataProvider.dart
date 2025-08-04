@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gymbuddy/models/userFormData.dart';
+import 'package:gymbuddy/services/firebaseUserService.dart';
 
 class FormDataProvider extends ChangeNotifier {
-  final UserModel _formData = UserModel();
+  UserModel _formData = UserModel();
 
   UserModel get data => _formData;
   UserModel get formData => _formData;
@@ -122,6 +123,15 @@ class FormDataProvider extends ChangeNotifier {
   void updateJoiningDate(DateTime value) {
     _formData.joiningDate = value;
     notifyListeners();
+  }
+
+  Future<void> fetchUserData(String uid) async {
+    final firestoreService = FirebaseUserService();
+    final user = await firestoreService.getUserById(uid);
+    if (user != null) {
+      _formData = user;
+      notifyListeners();
+    }
   }
 
   void resetForm() {
