@@ -62,6 +62,9 @@ class _userSignUpForm3State extends State<userSignUpForm3> {
                       ),
                     ),
                     GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/signupForm4');
+                      },
                       child: Container(
                         child: Text(
                           'Skip',
@@ -150,7 +153,9 @@ class _userSignUpForm3State extends State<userSignUpForm3> {
                     ),
                     SizedBox(width: 20),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pushNamed(context, '/signupForm4');
+                      },
                       child: Container(
                         height: 42,
                         width: 100,
@@ -164,19 +169,12 @@ class _userSignUpForm3State extends State<userSignUpForm3> {
                           ),
                         ),
                         child: Center(
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, '/signupForm4');
-                            },
-                            child: Text(
-                              "Submit",
-                              style: TextStyle(
-                                fontFamily: "InterBold",
-                                fontSize: 14,
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onSecondary,
-                              ),
+                          child: Text(
+                            "Submit",
+                            style: TextStyle(
+                              fontFamily: "InterBold",
+                              fontSize: 14,
+                              color: Theme.of(context).colorScheme.onSecondary,
                             ),
                           ),
                         ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gymbuddy/components/locationDropDown.dart';
 import 'package:gymbuddy/components/longTextField.dart';
 import 'package:gymbuddy/components/passwordTextField.dart';
+import 'package:gymbuddy/components/profileImagePicker.dart';
 import 'package:gymbuddy/providers/userDataProvider.dart';
 import 'package:provider/provider.dart';
 
@@ -23,6 +24,7 @@ class _UserSignUpForm1State extends State<UserSignUpForm1> {
   List<String> countryList = [];
   String? selectedCountry;
   bool isLoading = true;
+  int? age;
 
   @override
   void dispose() {
@@ -53,12 +55,27 @@ class _UserSignUpForm1State extends State<UserSignUpForm1> {
         return false;
       }
 
+      if (selectedDob != null) {
+        DateTime today = DateTime.now();
+        age = today.year - selectedDob!.year;
+
+        if (today.month < selectedDob!.month ||
+            (today.month == selectedDob!.month &&
+                today.day < selectedDob!.day)) {
+          if (age != null) {
+            age = age! - 1;
+          }
+        }
+      }
+
       final provider = Provider.of<FormDataProvider>(context, listen: false);
       provider.updateName(nameController.text.trim());
       provider.updateUsername(usernameController.text.trim());
       provider.updateEmail(emailController.text.trim());
+      provider.updatePassword(passwordController.text.trim());
       provider.updateGender(selectedGender!);
       provider.updateDob(selectedDob!);
+      provider.updateAge(age!);
 
       // Debug print
       // print('Name: ${provider.formData.name}');
@@ -66,6 +83,7 @@ class _UserSignUpForm1State extends State<UserSignUpForm1> {
       // print('Email: ${provider.formData.email}');
       // print('Gender: ${provider.formData.gender}');
       // print('DOB: ${provider.formData.dob}');
+      // print('Age: ${provider.formData.age}');
 
       ScaffoldMessenger.of(
         context,
@@ -115,33 +133,7 @@ class _UserSignUpForm1State extends State<UserSignUpForm1> {
                   ),
                   SizedBox(height: 30),
                   // Image picker (optional)
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      border: Border.all(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.onSecondaryContainer,
-                        width: 1.5,
-                      ),
-                    ),
-                    height: 141,
-                    width: MediaQuery.of(context).size.width * 0.35,
-                    child: Center(
-                      child: IconButton(
-                        onPressed: () {
-                          // TODO: Add image picker
-                        },
-                        icon: Icon(
-                          Icons.person_add_alt_1_sharp,
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.onSecondaryContainer,
-                          size: 72,
-                        ),
-                      ),
-                    ),
-                  ),
+                  ProfileImagePicker(),
                   SizedBox(height: 20),
                   CustomTextField(
                     controller: nameController,

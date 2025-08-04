@@ -147,7 +147,10 @@ class _userSignUpForm2State extends State<userSignUpForm2> {
                     ),
                     SizedBox(width: 20),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        handleSubmit;
+                        Navigator.pushNamed(context, '/signupForm3');
+                      },
                       child: Container(
                         height: 42,
                         width: 100,
@@ -161,20 +164,12 @@ class _userSignUpForm2State extends State<userSignUpForm2> {
                           ),
                         ),
                         child: Center(
-                          child: GestureDetector(
-                            onTap: () {
-                              handleSubmit;
-                              Navigator.pushNamed(context, '/signupForm3');
-                            },
-                            child: Text(
-                              "Verify",
-                              style: TextStyle(
-                                fontFamily: "InterBold",
-                                fontSize: 14,
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onSecondary,
-                              ),
+                          child: Text(
+                            "Verify",
+                            style: TextStyle(
+                              fontFamily: "InterBold",
+                              fontSize: 14,
+                              color: Theme.of(context).colorScheme.onSecondary,
                             ),
                           ),
                         ),

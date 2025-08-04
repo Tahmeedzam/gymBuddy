@@ -1,5 +1,7 @@
+import 'package:bounce/bounce.dart';
 import 'package:flutter/material.dart';
 import 'package:gymbuddy/providers/userDataProvider.dart';
+import 'package:gymbuddy/services/firebaseUserService.dart';
 import 'package:provider/provider.dart';
 
 class UserSignUpForm6 extends StatefulWidget {
@@ -49,7 +51,7 @@ class _UserSignUpForm6State extends State<UserSignUpForm6> {
       builder: (context) {
         return SizedBox(
           height:
-              MediaQuery.of(context).size.height * 0.50, // 85% of screen height
+              MediaQuery.of(context).size.height * 0.55, // 85% of screen height
           child: StatefulBuilder(
             builder: (context, setState) {
               bool isRestDaySelected = selectedOptions.contains('Rest day');
@@ -91,81 +93,123 @@ class _UserSignUpForm6State extends State<UserSignUpForm6> {
                     const SizedBox(height: 20),
 
                     /// Options
-                    Wrap(
-                      spacing: 12,
-                      runSpacing: 12,
-                      children: allOptions.map((option) {
-                        final isSelected = selectedOptions.contains(option);
-                        final isDisabled =
-                            isRestDaySelected && option != 'Rest day';
+                    Expanded(
+                      child: Wrap(
+                        spacing: 12,
+                        runSpacing: 12,
+                        children: allOptions.map((option) {
+                          final isSelected = selectedOptions.contains(option);
+                          final isDisabled =
+                              isRestDaySelected && option != 'Rest day';
 
-                        return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              if (option == 'Rest day') {
-                                if (selectedOptions.contains('Rest day')) {
-                                  selectedOptions.remove(
-                                    'Rest day',
-                                  ); // ✅ Deselect
-                                } else {
-                                  selectedOptions = [
-                                    'Rest day',
-                                  ]; // ✅ Select only 'Rest day'
-                                }
-                              } else {
-                                if (selectedOptions.contains('Rest day')) {
-                                  // Remove 'Rest day' if any other is being selected
-                                  selectedOptions.remove('Rest day');
-                                }
-
-                                if (selectedOptions.contains(option)) {
-                                  selectedOptions.remove(option);
-                                } else {
-                                  selectedOptions.add(option);
-                                }
-                              }
-                            });
-                          },
-
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 10,
-                              horizontal: 14,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: isSelected
-                                  ? Theme.of(context).colorScheme.tertiary
-                                  : Colors.transparent,
-                              border: Border.all(
-                                width: 1.2,
-                                color: isDisabled
-                                    ? Colors.grey
-                                    : Theme.of(context).colorScheme.onSecondary,
+                          return GestureDetector(
+                            onTap: isDisabled
+                                ? null
+                                : () {
+                                    setState(() {
+                                      if (option == 'Rest day') {
+                                        if (isSelected) {
+                                          selectedOptions.remove('Rest day');
+                                        } else {
+                                          selectedOptions = ['Rest day'];
+                                        }
+                                      } else {
+                                        selectedOptions.remove('Rest day');
+                                        if (isSelected) {
+                                          selectedOptions.remove(option);
+                                        } else {
+                                          selectedOptions.add(option);
+                                        }
+                                      }
+                                    });
+                                  },
+                            child: Container(
+                              width:
+                                  (MediaQuery.of(context).size.width - 64) /
+                                  2, // 2 columns
+                              // padding: EdgeInsets.symmetric(
+                              //   vertical: 12,
+                              //   horizontal: 12,
+                              // ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: isSelected
+                                    ? Theme.of(
+                                        context,
+                                      ).colorScheme.tertiary.withOpacity(0.1)
+                                    : Colors.transparent,
+                                // border: Border.all(
+                                //   color: isDisabled
+                                //       ? Colors.grey
+                                //       : Theme.of(
+                                //           context,
+                                //         ).colorScheme.onSecondary,
+                                //   width: 1.4,
+                                // ),
+                              ),
+                              child: Row(
+                                children: [
+                                  Checkbox(
+                                    value: isSelected,
+                                    onChanged: isDisabled
+                                        ? null
+                                        : (value) {
+                                            setState(() {
+                                              if (option == 'Rest day') {
+                                                if (isSelected) {
+                                                  selectedOptions.remove(
+                                                    'Rest day',
+                                                  );
+                                                } else {
+                                                  selectedOptions = [
+                                                    'Rest day',
+                                                  ];
+                                                }
+                                              } else {
+                                                selectedOptions.remove(
+                                                  'Rest day',
+                                                );
+                                                if (value == true) {
+                                                  selectedOptions.add(option);
+                                                } else {
+                                                  selectedOptions.remove(
+                                                    option,
+                                                  );
+                                                }
+                                              }
+                                            });
+                                          },
+                                    activeColor: Theme.of(
+                                      context,
+                                    ).colorScheme.tertiary,
+                                    materialTapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      option,
+                                      style: TextStyle(
+                                        color: isSelected
+                                            ? Theme.of(
+                                                context,
+                                              ).colorScheme.onSecondary
+                                            : Theme.of(context)
+                                                  .colorScheme
+                                                  .onSecondaryContainer,
+                                        decoration: isDisabled
+                                            ? TextDecoration.lineThrough
+                                            : TextDecoration.none,
+                                        fontSize: 20,
+                                        fontFamily: 'InterBold',
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            child: Text(
-                              option,
-                              style: isSelected
-                                  ? TextStyle(
-                                      // 👇 Use your selected text style
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.primary,
-                                      fontWeight: FontWeight.bold,
-                                    )
-                                  : TextStyle(
-                                      // 👇 Use your unselected text style
-                                      color: isDisabled
-                                          ? Colors.grey
-                                          : Theme.of(
-                                              context,
-                                            ).colorScheme.onSecondaryContainer,
-                                    ),
-                            ),
-                          ),
-                        );
-                      }).toList(),
+                          );
+                        }).toList(),
+                      ),
                     ),
 
                     const SizedBox(height: 50),
@@ -307,53 +351,58 @@ class _UserSignUpForm6State extends State<UserSignUpForm6> {
                       children: provider.weeklyGoal.keys.map((day) {
                         final selectedOptions = provider.weeklyGoal[day] ?? [];
 
-                        return ListTile(
-                          title: Text(
-                            day,
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.onSecondary,
-                              fontFamily: 'Inter',
-                              fontSize: 18,
+                        return Bounce(
+                          child: ListTile(
+                            title: Text(
+                              day,
+                              style: TextStyle(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSecondary,
+                                fontFamily: 'Inter',
+                                fontSize: 18,
+                              ),
                             ),
+                            subtitle: Text(
+                              selectedOptions.isEmpty
+                                  ? 'No workout selected'
+                                  : selectedOptions.join(', '),
+                              style: selectedOptions.isEmpty
+                                  ? TextStyle(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSecondaryContainer,
+                                      fontSize: 12,
+                                    )
+                                  : TextStyle(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.tertiary,
+                                      fontSize: 12,
+                                      fontFamily: 'Inter',
+                                    ),
+                            ),
+                            // trailing: Icon(
+                            //   selectedOptions.isEmpty
+                            //       ? Icons.check_box_outline_blank_outlined
+                            //       : Icons.check_box,
+                            //   color: selectedOptions.isEmpty
+                            //       ? Theme.of(
+                            //           context,
+                            //         ).colorScheme.onSecondaryContainer
+                            //       : Theme.of(context).colorScheme.tertiary,
+                            // ),
+                            onTap: () {
+                              showWorkoutModal(
+                                context,
+                                day, // or dynamically set the day
+                                provider.weeklyGoal[day] ?? [],
+                                (selectedOptions) {
+                                  provider.updateDayGoal(day, selectedOptions);
+                                },
+                              );
+                            },
                           ),
-                          subtitle: Text(
-                            selectedOptions.isEmpty
-                                ? 'No workout selected'
-                                : selectedOptions.join(', '),
-                            style: selectedOptions.isEmpty
-                                ? TextStyle(
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.onSecondaryContainer,
-                                    fontSize: 12,
-                                  )
-                                : TextStyle(
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.onSecondary,
-                                    fontSize: 12,
-                                  ),
-                          ),
-                          trailing: Icon(
-                            selectedOptions.isEmpty
-                                ? Icons.check_box_outline_blank_outlined
-                                : Icons.check_box,
-                            color: selectedOptions.isEmpty
-                                ? Theme.of(
-                                    context,
-                                  ).colorScheme.onSecondaryContainer
-                                : Theme.of(context).colorScheme.tertiary,
-                          ),
-                          onTap: () {
-                            showWorkoutModal(
-                              context,
-                              day, // or dynamically set the day
-                              provider.weeklyGoal[day] ?? [],
-                              (selectedOptions) {
-                                provider.updateDayGoal(day, selectedOptions);
-                              },
-                            );
-                          },
                         );
                       }).toList(),
                     );
@@ -395,11 +444,12 @@ class _UserSignUpForm6State extends State<UserSignUpForm6> {
                         ),
                         child: Center(
                           child: GestureDetector(
-                            onTap: () {
+                            onTap: () async {
                               final provider = Provider.of<FormDataProvider>(
                                 context,
                                 listen: false,
                               );
+                              final user = provider.formData;
 
                               // Replace these lists with your actual selected options per day
                               final weeklyData = {
@@ -414,15 +464,57 @@ class _UserSignUpForm6State extends State<UserSignUpForm6> {
                                     provider.weeklyGoal['Saturday'] ?? [],
                                 'Sunday': provider.weeklyGoal['Sunday'] ?? [],
                               };
+                              // Debug print
+                              // print(
+                              //   'profileImageUrl: ${provider.formData.profileImageUrl}',
+                              // );
+                              // print('Name: ${provider.formData.name}');
+                              // print('Username: ${provider.formData.username}');
+                              // print('Email: ${provider.formData.email}');
+                              // print('password: ${provider.formData.password}');
+                              // print('Gender: ${provider.formData.gender}');
+                              // print('DOB: ${provider.formData.dob}');
+                              // print('Age: ${provider.formData.age}');
+                              // print('location: ${provider.formData.location}');
+
+                              // print('height: ${provider.formData.height}');
+                              // print('weight: ${provider.formData.weight}');
+                              // print('bmi: ${provider.formData.bmi}');
+                              // print(
+                              //   'bmiStringResult: ${provider.formData.bmiStringResult}',
+                              // );
+                              // print(
+                              //   'fitnessLevelName: ${provider.formData.fitnessLevelName}',
+                              // );
+
+                              // print(
+                              //   'dailyExerciseMinutes: ${provider.formData.dailyExerciseMinutes}',
+                              // );
+                              // print(
+                              //   'dailyKcalBurn: ${provider.formData.dailyKcalBurn}',
+                              // );
+                              // print(provider.weeklyGoal);
 
                               provider.updateWeeklyGoal(weeklyData);
 
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('Weekly routine saved ✅'),
-                                ),
-                              );
-                              print(provider.weeklyGoal);
+                              final success =
+                                  await FirebaseUserService.createUserProfile(
+                                    userModel: user,
+                                  );
+                              if (success) {
+                                Navigator.pushReplacementNamed(
+                                  context,
+                                  '/homePage',
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      '❌ Failed to sign up. Try again.',
+                                    ),
+                                  ),
+                                );
+                              }
                             },
                             child: Text(
                               "Submit",

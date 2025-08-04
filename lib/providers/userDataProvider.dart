@@ -7,6 +7,7 @@ class FormDataProvider extends ChangeNotifier {
   UserModel get data => _formData;
   UserModel get formData => _formData;
   String? get location => _formData.location;
+  String? profileImageUrl;
   Map<String, List<String>> _weeklyGoal = {
     'Monday': [],
     'Tuesday': [],
@@ -19,8 +20,8 @@ class FormDataProvider extends ChangeNotifier {
   Map<String, List<String>> get weeklyGoal => _weeklyGoal;
 
   //FormPage1
-  void updateProfileImageUrl(String value) {
-    _formData.profileImageUrl = value;
+  void setProfileImageUrl(String url) {
+    _formData.profileImageUrl = url;
     notifyListeners();
   }
 
@@ -44,8 +45,18 @@ class FormDataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateAge(int? value) {
+    _formData.age = value;
+    notifyListeners();
+  }
+
   void updateEmail(String value) {
     _formData.email = value;
+    notifyListeners();
+  }
+
+  void updatePassword(String value) {
+    _formData.password = value;
     notifyListeners();
   }
 
@@ -99,7 +110,7 @@ class FormDataProvider extends ChangeNotifier {
   }
 
   void updateWeeklyGoal(Map<String, List<String>> goal) {
-    _weeklyGoal = goal;
+    _formData.weeklyWorkoutPlan = goal;
     notifyListeners();
   }
 

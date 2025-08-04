@@ -27,9 +27,7 @@ class _userSignUpForm5State extends State<userSignUpForm5> {
     provider.updateDailyExerciseMinutes(totalMinutes);
     provider.updateDailyKcalBurn(kcal);
 
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text('Goals saved ✅')));
+    Navigator.pushNamed(context, '/signupForm6');
 
     // Navigate or show dialog if needed
   }
@@ -88,6 +86,9 @@ class _userSignUpForm5State extends State<userSignUpForm5> {
                       ),
                     ),
                     GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/signupForm6');
+                      },
                       child: Container(
                         child: Text(
                           'Skip',
@@ -324,7 +325,7 @@ class _userSignUpForm5State extends State<userSignUpForm5> {
                     ),
                     SizedBox(width: 20),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: handleGoalSubmit,
                       child: Container(
                         height: 42,
                         width: 100,
@@ -338,19 +339,12 @@ class _userSignUpForm5State extends State<userSignUpForm5> {
                           ),
                         ),
                         child: Center(
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, '/signupForm4');
-                            },
-                            child: Text(
-                              "Submit",
-                              style: TextStyle(
-                                fontFamily: "InterBold",
-                                fontSize: 14,
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onSecondary,
-                              ),
+                          child: Text(
+                            "Submit",
+                            style: TextStyle(
+                              fontFamily: "InterBold",
+                              fontSize: 14,
+                              color: Theme.of(context).colorScheme.onSecondary,
                             ),
                           ),
                         ),

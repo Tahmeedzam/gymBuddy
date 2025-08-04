@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
+  //Automatic
+  bool? verified;
+  bool? referralUsed;
+  DateTime? joiningDate;
+
   //Form1
   String? profileImageUrl;
   String? uid;
@@ -9,10 +14,10 @@ class UserModel {
   String? username;
   String? gender;
   DateTime? dob;
+  int? age;
   String? email;
+  String? password;
   String? location;
-  bool? verified;
-  bool? referralUsed;
 
   //Form2
   double? height;
@@ -29,7 +34,6 @@ class UserModel {
   Map<String, List<String>>? weeklyWorkoutPlan;
 
   String? bio;
-  DateTime? joiningDate;
 
   UserModel({
     //Form1
@@ -39,7 +43,9 @@ class UserModel {
     this.username,
     this.gender,
     this.dob,
+    this.age,
     this.email,
+    this.password,
     this.location,
     this.verified,
     this.referralUsed,
@@ -97,26 +103,39 @@ class UserModel {
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      profileImageUrl: map['profileImageUrl'],
+      profileImageUrl: map['userProfileImageUrl'],
       uid: map['uid'],
-      name: map['fullName'],
+      name: map['userFullName'],
       username: map['userName'],
-      gender: map['gender'],
-      dob: map['dob'] != null ? (map['dob'] as Timestamp).toDate() : null,
-      email: map['email'],
-      location: map['location'],
-      verified: map['isVerified'],
-      referralUsed: map['isReferred'],
-      height: map['height']?.toDouble(),
-      weight: map['weight']?.toDouble(),
-      bmi: map['bmi']?.toDouble(),
+      gender: map['userGender'],
+      dob: map['userDOB'] != null
+          ? (map['userDOB'] as Timestamp).toDate()
+          : null,
+      email: map['userEmail'],
+      location: map['userLocation'],
+      verified: map['isUserVerified'],
+      referralUsed: map['isUserReferred'],
+      height: map['userHeight']?.toDouble(),
+      weight: map['userWeight']?.toDouble(),
+      bmi: map['userBMIScore']?.toDouble(),
+      bmiStringResult: map['userBMIStringResult'],
+      fitnessLevelName: map['userFitnessLevel'],
+      dailyExerciseMinutes: map['userDailyTimeGoal'],
+      dailyKcalBurn: map['userDailyKcalGoal'],
       weeklyWorkoutPlan: (map['weeklyWorkoutPlan'] as Map<String, dynamic>?)
           ?.map((key, value) => MapEntry(key, List<String>.from(value))),
-      bio: map['bio'],
-      joiningDate: map['joiningDate'] != null
-          ? (map['joiningDate'] as Timestamp).toDate()
+      bio: map['userBio'],
+      joiningDate: map['userJoiningDate'] != null
+          ? (map['userJoiningDate'] as Timestamp).toDate()
           : null,
     );
+  }
+
+  void prepareForSaving({required String uid}) {
+    this.uid = uid;
+    joiningDate ??= DateTime.now();
+    verified ??= true;
+    referralUsed ??= false;
   }
 
   void reset() {

@@ -1,4 +1,6 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:gymbuddy/components/theme.dart';
 import 'package:gymbuddy/pages/formPages/userSignUpForm3.dart';
 import 'package:gymbuddy/pages/formPages/userSignUpForm1.dart';
@@ -13,7 +15,10 @@ import 'package:gymbuddy/pages/signupPages/userSignOptions.dart';
 import 'package:gymbuddy/providers/userDataProvider.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: '.env');
+  await Firebase.initializeApp();
   runApp(
     ChangeNotifierProvider(
       create: (_) => FormDataProvider(),
@@ -39,11 +44,12 @@ class MyApp extends StatelessWidget {
       // home: const userSignUpForm2(),
       // home: const userSignUpForm3(),
       // home: const userSignUpForm4(),
-      // home: const userSignUpForm5(),
-      home: const UserSignUpForm6(),
+      home: const userSignUpForm5(),
+      // home: const UserSignUpForm6(),
       routes: {
         '/userSignOptions': (context) => const UserSignOptions(),
         '/trainerSignOptions': (context) => const TrainerSignOptions(),
+        '/homePage': (context) => const HomePage(),
         '/signupForm1': (context) => const UserSignUpForm1(),
         '/signupForm2': (context) => const userSignUpForm2(),
         '/signupForm3': (context) => const userSignUpForm3(),
